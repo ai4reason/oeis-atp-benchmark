@@ -33,3 +33,17 @@ The following commands generate a folder "pb-rand" (or pb-small) containing
 sh rand.sh pb 100;
 sh small.sh pb 100;
 ```
+
+## Paper
+
+A paper about the benchmark and initial results of ATPs and SMTs on the problems is at https://arxiv.org/abs/2304.02986 .
+
+## Bounties
+
+We selected 1000 of the initially unsolved problems from the benchmark
+and translated the SMT2 representation into a set theoretic representation used by 
+the Megalodon ITP system (https://github.com/ai4reason/Megalodon).
+We then placed a bounty of 1 Proofgold (http://proofgold.net/) bar on each of the corresponding
+formal propositions.
+As a consequence anyone can claim 1 Proofgold bar by giving
+an appropriate proof term for the corresponding problem. The details are available at http://grid01.ciirc.cvut.cz/~chad/oeis-mgpg1000.tgz .
