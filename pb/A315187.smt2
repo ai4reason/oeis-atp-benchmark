@@ -1,0 +1,21 @@
+;; sequence(s): A315187
+;; terms: 1 6 10 14 18 24 30 34 38 42 48 54 58 62 66 72 78 82 86 90
+;; small program: ((loop(((y mod (1 + (2 + 2))) div (1 + 2)) + x, x - 2, 1) + x) + x) * (if x <= 0 then 1 else 2)
+;; fast program: ((((((x - 1) div (1 + (2 + 2))) + x) + x) + (x div (1 + (2 + 2)))) * (if x <= 0 then 1 else 2)) + 2
+(set-logic UFNIA)
+(declare-fun f0 (Int Int) Int)
+(declare-fun g0 (Int) Int)
+(declare-fun h0 () Int)
+(declare-fun u0 (Int Int) Int)
+(declare-fun v0 (Int) Int)
+(declare-fun small (Int) Int)
+(declare-fun fast (Int) Int)
+(assert (forall ((x Int) (y Int)) (= (f0 x y) (+ (div (mod y (+ 1 (+ 2 2))) (+ 1 2)) x))))
+(assert (forall ((x Int)) (= (g0 x) (- x 2))))
+(assert (= h0 1))
+(assert (forall ((x Int) (y Int)) (= (u0 x y) (ite (<= x 0) y (f0 (u0 (- x 1) y) x)))))
+(assert (forall ((x Int)) (= (v0 x) (u0 (g0 x) h0))))
+(assert (forall ((x Int)) (= (small x) (* (+ (+ (v0 x) x) x) (ite (<= x 0) 1 2)))))
+(assert (forall ((x Int)) (= (fast x) (+ (* (+ (+ (+ (div (- x 1) (+ 1 (+ 2 2))) x) x) (div x (+ 1 (+ 2 2)))) (ite (<= x 0) 1 2)) 2))))
+(assert (exists ((c Int)) (and (>= c 0) (not (= (small c) (fast c))))))
+(check-sat)

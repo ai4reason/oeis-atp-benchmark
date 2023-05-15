@@ -1,0 +1,21 @@
+;; sequence(s): A47613
+;; terms: 1 2 4 5 9 10 12 13 17 18 20 21 25 26 28 29 33 34 36 37
+;; small program: 1 + (x + compr((x div 2) mod 2, x div 2))
+;; fast program: (((2 - (x mod (2 + 2))) div 2) + x) + x
+(set-logic UFNIA)
+(declare-fun f0 (Int) Int)
+(declare-fun g0 (Int) Int)
+(declare-fun t0 (Int) Int)
+(declare-fun u0 (Int) Int)
+(declare-fun v0 (Int) Int)
+(declare-fun small (Int) Int)
+(declare-fun fast (Int) Int)
+(assert (forall ((x Int)) (= (f0 x) (mod (div x 2) 2))))
+(assert (forall ((x Int)) (= (g0 x) (div x 2))))
+(assert (forall ((x Int)) (= (t0 x) (ite (<= (f0 x) 0) x (t0 (+ x 1))))))
+(assert (forall ((x Int)) (= (u0 x) (ite (<= x 0) (t0 0) (t0 (+ (u0 (- x 1)) 1))))))
+(assert (forall ((x Int)) (= (v0 x) (u0 (g0 x)))))
+(assert (forall ((x Int)) (= (small x) (+ 1 (+ x (v0 x))))))
+(assert (forall ((x Int)) (= (fast x) (+ (+ (div (- 2 (mod x (+ 2 2))) 2) x) x))))
+(assert (exists ((c Int)) (and (>= c 0) (not (= (small c) (fast c))))))
+(check-sat)

@@ -1,0 +1,27 @@
+;; sequence(s): A214405
+;; terms: 1 29 41 85 113 173 217 293 353 445 521 629 721 845 953 1093 1217 1373 1513 1685
+;; small program: (2 * loop2((y * y) - x, 2 + y, x, 1, 2 + 2)) - 1
+;; fast program: ((((1 + 2) * ((x mod 2) + x)) + (x * x)) * (2 + 2)) + 1
+(set-logic UFNIA)
+(declare-fun f0 (Int Int) Int)
+(declare-fun g0 (Int Int) Int)
+(declare-fun h0 (Int) Int)
+(declare-fun i0 () Int)
+(declare-fun j0 () Int)
+(declare-fun u0 (Int Int Int) Int)
+(declare-fun v0 (Int Int Int) Int)
+(declare-fun w0 (Int) Int)
+(declare-fun small (Int) Int)
+(declare-fun fast (Int) Int)
+(assert (forall ((x Int) (y Int)) (= (f0 x y) (- (* y y) x))))
+(assert (forall ((x Int) (y Int)) (= (g0 x y) (+ 2 y))))
+(assert (forall ((x Int)) (= (h0 x) x)))
+(assert (= i0 1))
+(assert (= j0 (+ 2 2)))
+(assert (forall ((x Int) (y Int) (z Int)) (= (u0 x y z) (ite (<= x 0) y (f0 (u0 (- x 1) y z) (v0 (- x 1) y z))))))
+(assert (forall ((x Int) (y Int) (z Int)) (= (v0 x y z) (ite (<= x 0) z (g0 (u0 (- x 1) y z) (v0 (- x 1) y z))))))
+(assert (forall ((x Int)) (= (w0 x) (u0 (h0 x) i0 j0))))
+(assert (forall ((x Int)) (= (small x) (- (* 2 (w0 x)) 1))))
+(assert (forall ((x Int)) (= (fast x) (+ (* (+ (* (+ 1 2) (+ (mod x 2) x)) (* x x)) (+ 2 2)) 1))))
+(assert (exists ((c Int)) (and (>= c 0) (not (= (small c) (fast c))))))
+(check-sat)

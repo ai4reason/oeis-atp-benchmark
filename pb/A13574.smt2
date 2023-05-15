@@ -1,0 +1,21 @@
+;; sequence(s): A13574
+;; terms: 3 7 10 12 15 19 22 24 27 31 34 36 39 43 46 48 51 55 58 60
+;; small program: loop((((x mod 2) + y) + y) + y, 1 + x, 0)
+;; fast program: ((2 * (2 + x)) - (((2 - x) div 2) mod 2)) + x
+(set-logic UFNIA)
+(declare-fun f0 (Int Int) Int)
+(declare-fun g0 (Int) Int)
+(declare-fun h0 () Int)
+(declare-fun u0 (Int Int) Int)
+(declare-fun v0 (Int) Int)
+(declare-fun small (Int) Int)
+(declare-fun fast (Int) Int)
+(assert (forall ((x Int) (y Int)) (= (f0 x y) (+ (+ (+ (mod x 2) y) y) y))))
+(assert (forall ((x Int)) (= (g0 x) (+ 1 x))))
+(assert (= h0 0))
+(assert (forall ((x Int) (y Int)) (= (u0 x y) (ite (<= x 0) y (f0 (u0 (- x 1) y) x)))))
+(assert (forall ((x Int)) (= (v0 x) (u0 (g0 x) h0))))
+(assert (forall ((x Int)) (= (small x) (v0 x))))
+(assert (forall ((x Int)) (= (fast x) (+ (- (* 2 (+ 2 x)) (mod (div (- 2 x) 2) 2)) x))))
+(assert (exists ((c Int)) (and (>= c 0) (not (= (small c) (fast c))))))
+(check-sat)

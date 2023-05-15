@@ -1,0 +1,21 @@
+;; sequence(s): A14637
+;; terms: 1 7 55 81 189 235 403 469 697 783 1071 1177 1525 1651 2059 2205 2673 2839 3367 3553
+;; small program: loop(((1 + x) * (2 + ((2 * (x + x)) + x))) div 2, 1, (2 * (x div 2)) + x)
+;; fast program: ((((((1 + (2 * ((2 * (x + x)) + x))) * (x div 2)) + x) + x) + x) * 2) + 1
+(set-logic UFNIA)
+(declare-fun f0 (Int) Int)
+(declare-fun g0 () Int)
+(declare-fun h0 (Int) Int)
+(declare-fun u0 (Int Int) Int)
+(declare-fun v0 (Int) Int)
+(declare-fun small (Int) Int)
+(declare-fun fast (Int) Int)
+(assert (forall ((x Int)) (= (f0 x) (div (* (+ 1 x) (+ 2 (+ (* 2 (+ x x)) x))) 2))))
+(assert (= g0 1))
+(assert (forall ((x Int)) (= (h0 x) (+ (* 2 (div x 2)) x))))
+(assert (forall ((x Int) (y Int)) (= (u0 x y) (ite (<= x 0) y (f0 (u0 (- x 1) y))))))
+(assert (forall ((x Int)) (= (v0 x) (u0 g0 (h0 x)))))
+(assert (forall ((x Int)) (= (small x) (v0 x))))
+(assert (forall ((x Int)) (= (fast x) (+ (* (+ (+ (+ (* (+ 1 (* 2 (+ (* 2 (+ x x)) x))) (div x 2)) x) x) x) 2) 1))))
+(assert (exists ((c Int)) (and (>= c 0) (not (= (small c) (fast c))))))
+(check-sat)
